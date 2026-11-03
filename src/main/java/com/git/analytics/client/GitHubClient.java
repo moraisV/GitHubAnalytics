@@ -4,6 +4,9 @@ import com.git.analytics.dto.GitHubUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import com.git.analytics.dto.GitHubRepoResponse;
+import java.util.List;
+import java.util.Arrays;
 
 @Component
 public class GitHubClient {
@@ -19,7 +22,16 @@ public class GitHubClient {
                 .body(GitHubUserResponse.class);
     }
 
+    public List<GitHubRepoResponse> getRepositories(String username){
+        GitHubRepoResponse[] repositories = restClient.get()
+                .uri("/users/{username}/repos?type=owner&per_page=100&page=1", username)
+                .retrieve()
+                .body(GitHubUserResponse.class[]);
+        if (repositories == null) {
+            return List.of();
+        }
+
+        return Arrays.asList(repositories);
+    }
+
 }
-
-
-// @GetMapping("/{username}")

@@ -17,4 +17,11 @@ public class AnalyticsService {
         return gitHubClient.getUser(username);
     }
 
+    public AnalyticsResponse getAnalytics(String username){
+        GitHubUserResponse gitUser = gitHubClient.getUser(username);
+
+        AnalyticsResponse analysResponse = new AnalyticsResponse(gitUser.login(), gitUser.name(), gitUser.avatarUrl(), gitUser.followers(), gitUser.publicRepos());
+        return analysResponse;
+
+    }
 }
